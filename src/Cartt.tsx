@@ -16,6 +16,7 @@ import { formatPrice } from "./components/PriceTag";
 
 import emailjs from "emailjs-com";
 import Navbar from "./components/Navbar";
+import SuccessAlert from "./components/SuccessAlert";
 
 export const Cartt = () => {
   const [selectedProduct, setSelectedProduct] = React.useState(cartData[0]);
@@ -32,6 +33,7 @@ export const Cartt = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [loading, setLoading] = React.useState(false);
+  const [done, setDone] = React.useState(true);
 
   const toast = useToast();
 
@@ -53,7 +55,7 @@ export const Cartt = () => {
         "user_sJgssHn8SRJeDv2X4BUaE"
       )
       .then((res: any) => {
-        console.log(res);
+        setDone(true);
         toast({
           description: "Order recieved, hear from us soon!",
           status: "info",
@@ -78,51 +80,61 @@ export const Cartt = () => {
     <>
       <ColorModeSwitcher justifySelf="flex-end" />
       <Navbar />
-      <Box
-        maxW={{ base: "3xl", lg: "7xl" }}
-        mx="auto"
-        px={{ base: "8", md: "12" }}
-        py={{ base: "8", md: "12" }}
-      >
-        <Stack
-          direction={{ base: "column", lg: "row" }}
-          align={{ lg: "flex-start" }}
-          spacing={{ base: "8", md: "16" }}
+      {done ? (
+        <SuccessAlert
+          onClick={() => {
+            setDone(false);
+            onClose();
+          }}
+        />
+      ) : (
+        <Box
+          maxW={{ base: "3xl", lg: "7xl" }}
+          mx="auto"
+          px={{ base: "8", md: "12" }}
+          py={{ base: "8", md: "12" }}
         >
-          <Stack spacing={{ base: "8", md: "10" }} flex="2">
-            <Heading fontSize="2xl" fontWeight="extrabold">
-              Shopping Cart (3 items)
-            </Heading>
+          <Stack
+            direction={{ base: "column", lg: "row" }}
+            align={{ lg: "flex-start" }}
+            spacing={{ base: "8", md: "16" }}
+          >
+            <Stack spacing={{ base: "8", md: "10" }} flex="2">
+              <Heading fontSize="2xl" fontWeight="extrabold">
+                Shopping Cart (3 items)
+              </Heading>
 
-            <Stack spacing="6">
-              {cartData.map((item) => (
-                <CartItem
-                  key={item.id}
-                  {...item}
-                  onClickSelect={onClickSelect}
-                  selectedProduct={selectedProduct}
-                  onChangeQuantity={onChangeQuantity}
-                />
-              ))}
+              <Stack spacing="6">
+                {cartData.map((item) => (
+                  <CartItem
+                    key={item.id}
+                    {...item}
+                    onClickSelect={onClickSelect}
+                    selectedProduct={selectedProduct}
+                    onChangeQuantity={onChangeQuantity}
+                    onChangeSize={onChangeQuantity}
+                  />
+                ))}
+              </Stack>
             </Stack>
+
+            <Flex direction="column" align="center" flex="1">
+              <CartOrderSummary
+                selectedProduct={selectedProduct}
+                quantity={quantity}
+                onOpenModal={onOpen}
+              />
+            </Flex>
           </Stack>
 
-          <Flex direction="column" align="center" flex="1">
-            <CartOrderSummary
-              selectedProduct={selectedProduct}
-              quantity={quantity}
-              onOpenModal={onOpen}
-            />
-          </Flex>
-        </Stack>
-
-        <CheckoutModal
-          isOpen={isOpen}
-          onClose={onClose}
-          loading={loading}
-          submit={submit}
-        />
-      </Box>
+          <CheckoutModal
+            isOpen={isOpen}
+            onClose={onClose}
+            loading={loading}
+            submit={submit}
+          />
+        </Box>
+      )}
     </>
   );
 };

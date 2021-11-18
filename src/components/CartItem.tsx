@@ -18,58 +18,57 @@ type CartItemProps = {
   isGiftWrapping?: boolean;
   name: string;
   description: string;
-  size: string;
+  size: number;
   price: number;
   currency: string;
   imageUrl: string;
   onChangeQuantity?: (quantity: number) => void;
-  onChangeSize?: (size: string) => void;
+  onChangeSize?: (size: number) => void;
   onClickGiftWrapping?: () => void;
   onClickSelect?: (data: any) => void;
   selectedProduct: any;
 };
 
-const QuantitySelect = (props: SelectProps) => {
-  return (
-    <Select
-      w={{ base: "100%", md: "64px" }}
-      aria-label="Select quantity"
-      focusBorderColor={useColorModeValue("blue.500", "blue.200")}
-      {...props}
-      colorScheme="purple"
-    >
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-    </Select>
-  );
-};
+// const QuantitySelect = (props: SelectProps) => {
+//   return (
+//     <Select
+//       w={{ base: "100%", md: "64px" }}
+//       aria-label="Select quantity"
+//       focusBorderColor={useColorModeValue("blue.500", "blue.200")}
+//       {...props}
+//       colorScheme="purple"
+//     >
+//       <option value="1">1</option>
+//       <option value="2">2</option>
+//       <option value="3">3</option>
+//       <option value="4">4</option>
+//     </Select>
+//   );
+// };
 
 const SizeSelect = (props: SelectProps) => {
   return (
     <Select
-      maxW="100px"
+      w={{ base: "100%", md: "100px" }}
       aria-label="Select size"
       focusBorderColor={useColorModeValue("blue.500", "blue.200")}
       {...props}
       colorScheme="purple"
     >
-      <option value="sm">Small</option>
-      <option value="md">Medium</option>
-      <option value="lg">large</option>
+      <option value="1">Small</option>
+      <option value="2">Medium</option>
+      <option value="3">large</option>
     </Select>
   );
 };
 
 export const CartItem = (props: CartItemProps) => {
-  const [quantity, setQuantity] = React.useState(1);
+  const [quantity, setQuantity] = React.useState(3);
 
   const {
     isGiftWrapping,
     name,
     description,
-    size,
     imageUrl,
     currency,
     price,
@@ -102,7 +101,7 @@ export const CartItem = (props: CartItemProps) => {
         display={{ base: "none", md: "flex" }}
       >
         <HStack>
-          <QuantitySelect
+          {/* <QuantitySelect
             value={quantity}
             onChange={(e) => {
               setQuantity(+e.currentTarget.value);
@@ -110,11 +109,14 @@ export const CartItem = (props: CartItemProps) => {
                 onChangeQuantity?.(+e.currentTarget.value);
               }
             }}
-          />
+          /> */}
           <SizeSelect
-            value={size}
+            value={quantity}
             onChange={(e) => {
-              onChangeSize?.(e.currentTarget.value);
+              setQuantity(+e.currentTarget.value);
+              if (selectedProduct.name === name) {
+                onChangeSize?.(+e.currentTarget.value);
+              }
             }}
           />
         </HStack>
@@ -146,12 +148,12 @@ export const CartItem = (props: CartItemProps) => {
       >
         <PriceTag price={price} currency={currency} />
         <SimpleGrid columns={2} spacing="10px" w="100%">
-          <QuantitySelect
+          <SizeSelect
             value={quantity}
             onChange={(e) => {
               setQuantity(+e.currentTarget.value);
               if (selectedProduct.name === name) {
-                onChangeQuantity?.(+e.currentTarget.value);
+                onChangeSize?.(+e.currentTarget.value);
               }
             }}
           />
