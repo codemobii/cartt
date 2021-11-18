@@ -21,19 +21,20 @@ export type CartProductMetaProps = {
 export const CartProductMeta = (props: CartProductMetaProps) => {
   const { isGiftWrapping = false, image, name, description } = props;
   return (
-    <Stack direction="row" spacing="5" width="full">
+    <Stack direction={{ base: "column", md: "row" }} spacing="5" width="full">
       <Image
         rounded="lg"
-        width="150px"
-        height="120px"
+        width={{ base: "100%", md: "150px" }}
+        height={{ base: "200px", md: "120px" }}
         fit="cover"
         src={image}
         alt={name}
         draggable="false"
         loading="lazy"
+        boxShadow="2xl"
       />
-      <Box pt="4">
-        <Stack spacing="0.5">
+      <Box pt={{ base: "0", md: "4" }}>
+        <Stack spacing="0.5" textAlign={{ base: "center", md: "left" }}>
           <Text fontWeight="medium">{name}</Text>
           <Text color={mode("gray.600", "gray.400")} fontSize="sm">
             {description}

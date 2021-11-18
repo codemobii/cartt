@@ -13,7 +13,7 @@ export default function Navbar() {
             objectFit="contain"
           />
 
-          <Button colorScheme="purple" size="md" fontSize="md" rounded="xl">
+          <Button colorScheme="purple" size="md" fontSize="sm" rounded="xl">
             Connect
           </Button>
         </Flex>

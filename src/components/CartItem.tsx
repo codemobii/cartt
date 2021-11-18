@@ -5,7 +5,10 @@ import {
   SelectProps,
   useColorModeValue,
   HStack,
+  SimpleGrid,
+  Stack,
   IconButton,
+  Button,
 } from "@chakra-ui/react";
 import * as React from "react";
 import { PriceTag } from "./PriceTag";
@@ -29,7 +32,7 @@ type CartItemProps = {
 const QuantitySelect = (props: SelectProps) => {
   return (
     <Select
-      maxW="64px"
+      w={{ base: "100%", md: "64px" }}
       aria-label="Select quantity"
       focusBorderColor={useColorModeValue("blue.500", "blue.200")}
       {...props}
@@ -81,6 +84,9 @@ export const CartItem = (props: CartItemProps) => {
       direction={{ base: "column", md: "row" }}
       justify="space-between"
       align="center"
+      borderWidth={{ base: 1, md: 0 }}
+      rounded="lg"
+      padding={{ base: "10px", md: 0 }}
     >
       <CartProductMeta
         name={name}
@@ -130,27 +136,16 @@ export const CartItem = (props: CartItemProps) => {
       </Flex>
 
       {/* Mobile */}
-      <Flex
-        mt="4"
+      <Stack
+        mt={{ base: "2", md: "4" }}
         align="center"
         width="full"
         justify="space-between"
         display={{ base: "flex", md: "none" }}
+        spacing="5"
       >
-        <IconButton
-          aria-label={`Select ${name} from cart`}
-          onClick={() => {
-            onClickSelect?.({ name: name, price: price });
-            onChangeQuantity?.(1);
-            setQuantity(1);
-          }}
-        >
-          <Checkbox
-            isChecked={selectedProduct.name === name}
-            colorScheme="purple"
-          />
-        </IconButton>
-        <HStack>
+        <PriceTag price={price} currency={currency} />
+        <SimpleGrid columns={2} spacing="10px" w="100%">
           <QuantitySelect
             value={quantity}
             onChange={(e) => {
@@ -160,15 +155,23 @@ export const CartItem = (props: CartItemProps) => {
               }
             }}
           />
-          <SizeSelect
-            value={size}
-            onChange={(e) => {
-              onChangeSize?.(e.currentTarget.value);
+
+          <Button
+            colorScheme="purple"
+            size="md"
+            variant={selectedProduct.name === name ? "solid" : "outline"}
+            fontSize="sm"
+            rounded="lg"
+            onClick={() => {
+              onClickSelect?.({ name: name, price: price });
+              onChangeQuantity?.(1);
+              setQuantity(1);
             }}
-          />
-        </HStack>
-        <PriceTag price={price} currency={currency} />
-      </Flex>
+          >
+            Buy this
+          </Button>
+        </SimpleGrid>
+      </Stack>
     </Flex>
   );
 };
