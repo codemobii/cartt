@@ -33,7 +33,7 @@ export const Cartt = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [loading, setLoading] = React.useState(false);
-  const [done, setDone] = React.useState(true);
+  const [done, setDone] = React.useState(false);
 
   const toast = useToast();
 
