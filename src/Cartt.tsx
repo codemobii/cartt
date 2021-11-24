@@ -41,8 +41,8 @@ export const Cartt = () => {
     setLoading(true);
     emailjs
       .send(
-        "service_46t5h6g",
-        "template_cagmljv",
+        "service_4kh6jij",
+        "template_i0aiqzx",
         {
           orderId: data.wallet,
           orderDate: new Date().toLocaleDateString(),
